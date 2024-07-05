@@ -1,10 +1,10 @@
+#!/usr/bin/env php
 <?php
 
 use League\Container\Container;
-use Nouracea\Nouramework\Http\Kernel;
-use Nouracea\Nouramework\Http\Request;
+use Nouracea\Nouramework\Console\Kernel;
 
-define('BASE_PATH', dirname(__DIR__));
+define('BASE_PATH', dirname(__FILE__));
 
 require_once BASE_PATH.'/vendor/autoload.php';
 
@@ -13,7 +13,6 @@ $container = require BASE_PATH.'/config/services.php';
 
 $kernel = $container->get(Kernel::class);
 
-$request = Request::createFromGlobals();
-$response = $kernel->handle($request);
+$status = $kernel->handle();
 
-$response->send();
+exit($status);

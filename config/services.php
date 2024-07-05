@@ -5,6 +5,8 @@ use League\Container\Argument\Literal\ArrayArgument;
 use League\Container\Argument\Literal\StringArgument;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
+use Nouracea\Nouramework\Console\Application;
+use Nouracea\Nouramework\Console\Kernel as ConsoleKernel;
 use Nouracea\Nouramework\Dbal\ConnectionFactory;
 use Nouracea\Nouramework\Http\Controller\AbstractController;
 use Nouracea\Nouramework\Http\Kernel;
@@ -30,6 +32,10 @@ $container->addShared(Kernel::class)
     ->addArgument(RouterInterface::class)
     ->addArgument($container);
 
+$container->addShared(ConsoleKernel::class)
+    ->addArgument($container)
+    ->addArgument(Application::class);
+
 $viewsPath = BASE_PATH.'/views';
 $container->addShared('twig-loader', FilesystemLoader::class)
     ->addArgument(new StringArgument($viewsPath));
@@ -47,5 +53,13 @@ $container->add(ConnectionFactory::class)
 $container->addShared(Connection::class, function () use ($container) {
     return $container->get(ConnectionFactory::class)->create();
 });
+
+$container->add(
+    'framework-commands-namespace',
+    new StringArgument('Nouracea\\Nouramework\\Console\\Commands\\')
+);
+
+$container->addShared(Application::class)
+    ->addArgument($container);
 
 return $container;

@@ -2,7 +2,4 @@
 
 namespace Nouracea\Nouramework\Tests;
 
-class Donkey
-{
-
-}
+class Donkey {}
